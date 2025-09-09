@@ -17,18 +17,22 @@ export default function DoctorLayout() {
           height: 92, // Increased from 80 to 92 to accommodate the extra padding
         },
         tabBarLabelStyle: {
-          fontSize: 12,
+          fontSize: 10,
           fontWeight: '500',
           marginTop: 4,
           marginBottom: 4, // Added margin below the label text
+        },
+        tabBarIconStyle: {
+          width: 20,
+          height: 20,
         },
       }}>
       <Tabs.Screen
         name="appointments"
         options={{
           title: 'Appointments',
-          tabBarIcon: ({ color, size }) => (
-            <Calendar color={color} size={size} />
+          tabBarIcon: ({ color }) => (
+            <Calendar color={color} size={20} />
           ),
         }}
       />
@@ -36,8 +40,8 @@ export default function DoctorLayout() {
         name="patients"
         options={{
           title: 'Patients',
-          tabBarIcon: ({ color, size }) => (
-            <Users color={color} size={size} />
+          tabBarIcon: ({ color }) => (
+            <Users color={color} size={20} />
           ),
         }}
       />
@@ -45,8 +49,8 @@ export default function DoctorLayout() {
         name="prescriptions"
         options={{
           title: 'Prescriptions',
-          tabBarIcon: ({ color, size }) => (
-            <FileText color={color} size={size} />
+          tabBarIcon: ({ color }) => (
+            <FileText color={color} size={20} />
           ),
         }}
       />
@@ -54,8 +58,8 @@ export default function DoctorLayout() {
         name="reports"
         options={{
           title: 'Reports',
-          tabBarIcon: ({ color, size }) => (
-            <ClipboardList color={color} size={size} />
+          tabBarIcon: ({ color }) => (
+            <ClipboardList color={color} size={20} />
           ),
         }}
       />
@@ -63,8 +67,8 @@ export default function DoctorLayout() {
         name="profile"
         options={{
           title: 'Profile',
-          tabBarIcon: ({ color, size }) => (
-            <User color={color} size={size} />
+          tabBarIcon: ({ color }) => (
+            <User color={color} size={20} />
           ),
         }}
       />

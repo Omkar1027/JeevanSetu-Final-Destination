@@ -20,9 +20,9 @@ interface Appointment {
 const appointmentDates = ['2024-09-08', '2024-09-18', '2024-09-20', '2024-09-25'];
 
 const appointments: Appointment[] = [
-  { date: '2024-09-08', patientName: 'Yogesh Ghadge', time: '10:00 AM', condition: 'Arthritis' },
+  { date: '2024-09-08', patientName: 'Anjali Choudhary', time: '10:00 AM', condition: 'Arthritis' },
   { date: '2024-09-18', patientName: 'Yash Hingu', time: '2:30 PM', condition: 'Cardiac Care' },
-  { date: '2024-09-20', patientName: 'Arvind Yadav', time: '11:00 AM', condition: 'Diabetes Type 2' },
+  { date: '2024-09-20', patientName: 'Varad Shinde', time: '11:00 AM', condition: 'Diabetes Type 2' },
   { date: '2024-09-25', patientName: 'Suzanne Dantis', time: '3:00 PM', condition: 'Hypertension' },
 ];
 

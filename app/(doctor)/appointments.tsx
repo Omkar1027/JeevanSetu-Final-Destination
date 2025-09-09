@@ -38,82 +38,12 @@ interface Appointment {
 // Dummy appointments data
 const dummyAppointments: Appointment[] = [
   {
-    id: 'dummy-1',
-    patientName: 'Sarah Johnson',
-    time: '09:00',
+    id: 'dummy-yogesh',
+    patientName: 'Yogesh Ghadge',
+    time: '08:30',
     priority: 'high',
     type: 'Emergency Consultation',
-    patient_id: 'patient-1',
-    appointment_date: new Date().toISOString(),
-    status: 'scheduled',
-  },
-  {
-    id: 'dummy-2',
-    patientName: 'Michael Chen',
-    time: '09:30',
-    priority: 'high',
-    type: 'Follow-up',
-    patient_id: 'patient-2',
-    appointment_date: new Date().toISOString(),
-    status: 'scheduled',
-  },
-  {
-    id: 'dummy-3',
-    patientName: 'Emily Davis',
-    time: '10:00',
-    priority: 'medium',
-    type: 'Regular Checkup',
-    patient_id: 'patient-3',
-    appointment_date: new Date().toISOString(),
-    status: 'scheduled',
-  },
-  {
-    id: 'dummy-4',
-    patientName: 'Robert Wilson',
-    time: '10:30',
-    priority: 'low',
-    type: 'Consultation',
-    patient_id: 'patient-4',
-    appointment_date: new Date().toISOString(),
-    status: 'scheduled',
-  },
-  {
-    id: 'dummy-5',
-    patientName: 'Lisa Anderson',
-    time: '11:00',
-    priority: 'medium',
-    type: 'Follow-up',
-    patient_id: 'patient-5',
-    appointment_date: new Date().toISOString(),
-    status: 'scheduled',
-  },
-  {
-    id: 'dummy-6',
-    patientName: 'David Brown',
-    time: '11:30',
-    priority: 'high',
-    type: 'Emergency',
-    patient_id: 'patient-6',
-    appointment_date: new Date().toISOString(),
-    status: 'scheduled',
-  },
-  {
-    id: 'dummy-7',
-    patientName: 'Jessica Martinez',
-    time: '14:00',
-    priority: 'low',
-    type: 'Routine Checkup',
-    patient_id: 'patient-7',
-    appointment_date: new Date().toISOString(),
-    status: 'scheduled',
-  },
-  {
-    id: 'dummy-8',
-    patientName: 'Thomas Taylor',
-    time: '14:30',
-    priority: 'medium',
-    type: 'Consultation',
-    patient_id: 'patient-8',
+    patient_id: 'patient-yogesh',
     appointment_date: new Date().toISOString(),
     status: 'scheduled',
   },
@@ -157,21 +87,22 @@ export default function AppointmentsScreen() {
         // Use dummy data on error
         setAppointments(dummyAppointments);
       } else if (data && data.length > 0) {
-        const mappedAppointments: Appointment[] = data.map((apt: any) => ({
-          id: apt.id,
-          patientName: apt.users?.name || 'Unknown Patient',
-          time: new Date(apt.appointment_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          priority: 'medium' as 'high' | 'medium' | 'low', // Default priority
-          type: 'Consultation',
-          patient_id: apt.patient_id,
-          appointment_date: apt.appointment_date,
-          status: apt.status,
-        }));
-        setAppointments(mappedAppointments);
-      } else {
-        // Use dummy data if no appointments found
-        setAppointments(dummyAppointments);
-      }
+  const mappedAppointments: Appointment[] = data.map((apt: any) => ({
+    id: apt.id,
+    patientName: apt.users?.name || 'Unknown Patient',
+    time: new Date(apt.appointment_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    priority: apt.priority || 'medium' as 'high' | 'medium' | 'low',
+    type: apt.type || 'Consultation',
+    patient_id: apt.patient_id,
+    appointment_date: apt.appointment_date,
+    status: apt.status,
+  }));
+  // COMBINE real data with dummy data
+  setAppointments([...mappedAppointments, ...dummyAppointments]);
+} else {
+  // Use dummy data if no appointments found
+  setAppointments(dummyAppointments);
+}
     } catch (error) {
       console.error('Unexpected error fetching appointments:', error);
       Alert.alert('Error', 'Unexpected error occurred while fetching appointments.');
@@ -413,6 +344,13 @@ If there are instructions, include them in the instructions field.`;
 
   const priorityCases = appointments.filter(apt => apt.priority === 'high');
   const regularAppointments = appointments.filter(apt => apt.priority !== 'high');
+
+  console.log('All appointments:', appointments);
+console.log('Priority cases:', priorityCases);
+console.log('Yogesh appointment found:', appointments.find(apt => apt.id === 'dummy-yogesh'));
+console.log('First appointment details:', appointments[0]);
+
+
   
   // Apply priority filter to regular appointments
   const filteredRegularAppointments = priorityFilter === 'all' 
@@ -853,115 +791,105 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     textAlign: 'center',
   },
-  voiceSection: {
-    marginBottom: 16,
-  },
-  voiceButton: {
-    backgroundColor: '#2563EB',
-    borderRadius: 12,
-    padding: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  recordingButton: {
-    backgroundColor: '#EF4444',
-  },
-  voiceButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '600',
-    marginLeft: 8,
-  },
-  filterButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#EBF8FF',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 8,
-    marginLeft: 'auto',
-  },
-  filterButtonText: {
-    color: '#2563EB',
-    fontSize: 14,
-    fontWeight: '600',
-    marginLeft: 6,
-  },
-  
-  // Filter modal styles
-  filterModalContent: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    padding: 24,
-    width: '85%',
-    maxHeight: '60%',
-  },
-  filterOption: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 16,
-    paddingHorizontal: 16,
-    borderRadius: 12,
-    marginBottom: 8,
-    backgroundColor: '#F9FAFB',
-    borderWidth: 1,
-    borderColor: '#E5E7EB',
-  },
-  selectedFilterOption: {
-    backgroundColor: '#EBF8FF',
-    borderColor: '#2563EB',
-  },
-  filterOptionText: {
-    fontSize: 16,
-    color: '#374151',
-    fontWeight: '500',
-  },
-  selectedFilterOptionText: {
-    color: '#2563EB',
-    fontWeight: '600',
-  },
-  priorityIndicator: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-  },
-  closeFilterButton: {
-    backgroundColor: '#F3F4F6',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-    marginTop: 16,
-    alignSelf: 'center',
-  },
-  closeFilterButtonText: {
-    color: '#374151',
-    fontSize: 16,
-    fontWeight: '600',
-    textAlign: 'center',
-  },
-  
-  // Empty state styles
   emptyState: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    padding: 32,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 8,
-    elevation: 2,
-  },
-  emptyStateText: {
-    fontSize: 16,
-    color: '#6B7280',
-    textAlign: 'center',
-    fontStyle: 'italic',
-  },
+  padding: 40,
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: '#FFFFFF',
+  borderRadius: 16,
+  marginBottom: 12,
+},
+emptyStateText: {
+  fontSize: 16,
+  color: '#6B7280',
+  textAlign: 'center',
+},
 
+// Filter-related styles
+filterButton: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  backgroundColor: '#EBF8FF',
+  paddingHorizontal: 12,
+  paddingVertical: 8,
+  borderRadius: 8,
+  marginLeft: 'auto',
+},
+filterButtonText: {
+  color: '#2563EB',
+  fontSize: 14,
+  fontWeight: '600',
+  marginLeft: 6,
+},
+filterModalContent: {
+  backgroundColor: '#FFFFFF',
+  borderRadius: 16,
+  padding: 24,
+  width: '80%',
+  maxHeight: '60%',
+},
+filterOption: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  paddingVertical: 16,
+  paddingHorizontal: 12,
+  borderRadius: 8,
+  marginBottom: 8,
+  backgroundColor: '#F9FAFB',
+},
+selectedFilterOption: {
+  backgroundColor: '#EBF8FF',
+  borderWidth: 2,
+  borderColor: '#2563EB',
+},
+filterOptionText: {
+  fontSize: 16,
+  color: '#374151',
+  fontWeight: '500',
+},
+selectedFilterOptionText: {
+  color: '#2563EB',
+  fontWeight: '600',
+},
+priorityIndicator: {
+  width: 12,
+  height: 12,
+  borderRadius: 6,
+},
+closeFilterButton: {
+  backgroundColor: '#374151',
+  paddingVertical: 12,
+  paddingHorizontal: 24,
+  borderRadius: 8,
+  marginTop: 16,
+  alignItems: 'center',
+},
+closeFilterButtonText: {
+  color: '#FFFFFF',
+  fontSize: 16,
+  fontWeight: '600',
+},
 
-
+// Voice recording styles
+voiceSection: {
+  marginBottom: 16,
+},
+voiceButton: {
+  backgroundColor: '#2563EB',
+  borderRadius: 12,
+  padding: 16,
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+},
+recordingButton: {
+  backgroundColor: '#EF4444',
+},
+voiceButtonText: {
+  color: '#FFFFFF',
+  fontSize: 16,
+  fontWeight: '600',
+  marginLeft: 8,
+},
 });

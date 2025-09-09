@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { FileDownloadService } from '@/utils/fileDownload';
-import Pdf from 'react-native-pdf';
-import * as FileSystem from 'expo-file-system';
-import * as MediaLibrary from 'expo-media-library';
-import * as Sharing from 'expo-sharing';
+import * as Linking from 'expo-linking';
 import { Asset } from 'expo-asset';
+import * as FileSystem from 'expo-file-system';
+import * as Sharing from 'expo-sharing';
 import {
   View,
   Text,
@@ -50,7 +49,7 @@ const mockReports: Report[] = [
     id: '1',
     patientName: 'Arvind Yadav',
     reportType: 'Blood Test Results',
-    uploadDate: '2024-03-15',
+    uploadDate: '2025-09-07',
     status: 'pending',
     fileSize: '2.3 MB',
     thumbnail: 'https://images.pexels.com/photos/40568/medical-appointment-doctor-healthcare-40568.jpeg',
@@ -58,9 +57,9 @@ const mockReports: Report[] = [
   },
   {
     id: '2',
-    patientName: 'Suzanne Dantis',
+    patientName: 'Yogesh Ghadge',
     reportType: 'Chest X-Ray',
-    uploadDate: '2024-03-14',
+    uploadDate: '2025-09-04',
     status: 'urgent',
     fileSize: '4.1 MB',
     thumbnail: 'https://images.pexels.com/photos/40568/medical-appointment-doctor-healthcare-40568.jpeg',
@@ -68,9 +67,9 @@ const mockReports: Report[] = [
   },
   {
     id: '3',
-    patientName: 'Yogesh Ghadge',
+    patientName: 'Suzanne Dantis',
     reportType: 'ECG Report',
-    uploadDate: '2024-03-13',
+    uploadDate: '2025-08-05',
     status: 'reviewed',
     fileSize: '1.8 MB',
     thumbnail: 'https://images.pexels.com/photos/40568/medical-appointment-doctor-healthcare-40568.jpeg',
@@ -80,7 +79,7 @@ const mockReports: Report[] = [
     id: '4',
     patientName: 'Yash Hingu',
     reportType: 'MRI Scan',
-    uploadDate: '2024-03-10',
+    uploadDate: '2025-05-03',
     status: 'pending',
     fileSize: '8.7 MB',
     thumbnail: 'https://images.pexels.com/photos/40568/medical-appointment-doctor-healthcare-40568.jpeg',
@@ -130,18 +129,6 @@ export default function ReportsScreen() {
   const handleDownload = async (report: Report) => {
     try {
       setDownloadingId(report.id);
-      
-      // Request media library permissions
-      const { status } = await MediaLibrary.requestPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert('Permission Required', 'Please grant storage permission to download files.');
-        return;
-      }
-
-      // Create a unique filename
-      const timestamp = new Date().getTime();
-      const fileName = `${report.patientName.replace(/\s+/g, '_')}_${report.reportType.replace(/\s+/g, '_')}_${timestamp}.pdf`;
-      const fileUri = FileSystem.documentDirectory + fileName;
 
       // Handle asset resolution for require() assets
       let sourceUri: string;
@@ -155,6 +142,11 @@ export default function ReportsScreen() {
         sourceUri = report.pdfPath;
       }
 
+      // Create a unique filename
+      const timestamp = new Date().getTime();
+      const fileName = `${report.patientName.replace(/\s+/g, '_')}_${report.reportType.replace(/\s+/g, '_')}_${timestamp}.pdf`;
+      const fileUri = FileSystem.documentDirectory + fileName;
+
       // Copy the asset to document directory
       await FileSystem.copyAsync({
         from: sourceUri,
@@ -162,27 +154,9 @@ export default function ReportsScreen() {
       });
       console.log('File copied from assets to:', fileUri);
 
-      // Save to device storage (Downloads folder)
-      const mediaAsset = await MediaLibrary.createAssetAsync(fileUri);
-      const album = await MediaLibrary.getAlbumAsync('Downloads');
-      
-      if (album == null) {
-        await MediaLibrary.createAlbumAsync('Downloads', mediaAsset, false);
-      } else {
-        await MediaLibrary.addAssetsToAlbumAsync([mediaAsset], album, false);
-      }
+      // Share the file instead of saving to gallery (works better in Expo Go)
+      await shareFile(fileUri, fileName);
 
-      Alert.alert(
-        'Download Complete',
-        `${report.reportType} has been saved to Downloads folder.`,
-        [
-          {
-            text: 'Share',
-            onPress: () => shareFile(fileUri, fileName)
-          },
-          { text: 'OK' }
-        ]
-      );
     } catch (error) {
       console.error('Download error:', error);
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
@@ -239,25 +213,19 @@ export default function ReportsScreen() {
     console.error('PDF Error:', error);
   };
 
-  const renderPdfViewer = () => {
-    if (!viewingReport) return null;
-
-    // Handle both asset numbers and URI strings
-    const pdfSource = typeof viewingReport.pdfPath === 'number'
-      ? viewingReport.pdfPath
-      : { uri: viewingReport.pdfPath };
-
-    return (
-      <Pdf
-        source={pdfSource}
-        onLoadComplete={onPdfLoadComplete}
-        onPageChanged={onPdfPageChanged}
-        onError={onPdfError}
-        style={styles.pdf}
-        enablePaging={true}
-        horizontal={false}
-      />
-    );
+  const handleOpenExternal = async (report: Report) => {
+    try {
+      let pdfUri: string;
+      if (typeof report.pdfPath === 'number') {
+        const asset = Asset.fromModule(report.pdfPath);
+        pdfUri = asset.uri;
+      } else {
+        pdfUri = report.pdfPath;
+      }
+      await Linking.openURL(pdfUri);
+    } catch (error) {
+      Alert.alert('Error', 'Failed to open PDF in external app.');
+    }
   };
 
   return (
@@ -334,7 +302,7 @@ export default function ReportsScreen() {
             <View style={styles.reportActions}>
               <TouchableOpacity 
                 style={styles.actionButton}
-                onPress={() => handleViewReport(report)}>
+                onPress={() => handleOpenExternal(report)}>
                 <Eye color="#2563EB" size={18} />
                 <Text style={styles.actionText}>View</Text>
               </TouchableOpacity>
@@ -369,7 +337,7 @@ export default function ReportsScreen() {
 
       {/* PDF Viewer Modal */}
       <Modal
-        visible={viewingReport !== null}
+        visible={false}
         animationType="slide"
         presentationStyle="fullScreen"
         onRequestClose={closePdfViewer}>
@@ -413,8 +381,6 @@ export default function ReportsScreen() {
                 </TouchableOpacity>
               </View>
             )}
-            
-            {viewingReport && !pdfError && renderPdfViewer()}
           </View>
         </SafeAreaView>
       </Modal>

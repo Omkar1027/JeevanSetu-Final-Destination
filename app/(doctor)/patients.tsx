@@ -44,13 +44,13 @@ const mockPatients: Patient[] = [
     name: 'Arvind Yadav',
     age: 65,
     condition: 'Diabetes Type 2',
-    lastVisit: '2024-03-10',
-    nextAppointment: '2024-03-20',
+    lastVisit: '2025-09-05',
+    nextAppointment: '2025-09-20',
     avatar: 'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg',
     history: [
       {
         id: 'h1',
-        date: '2024-03-10',
+        date: '2025-09-05',
         type: 'Regular Checkup',
         description: 'Routine diabetes monitoring',
         diagnosis: 'Blood sugar levels slightly elevated',
@@ -59,7 +59,7 @@ const mockPatients: Patient[] = [
       },
       {
         id: 'h2',
-        date: '2024-02-15',
+        date: '2025-08-22',
         type: 'Follow-up',
         description: 'HbA1c test results review',
         diagnosis: 'Diabetes management improving',
@@ -68,7 +68,7 @@ const mockPatients: Patient[] = [
       },
       {
         id: 'h3',
-        date: '2024-01-20',
+        date: '2025-07-10',
         type: 'Initial Consultation',
         description: 'First visit for diabetes management',
         diagnosis: 'Type 2 Diabetes Mellitus confirmed',
@@ -82,13 +82,13 @@ const mockPatients: Patient[] = [
     name: 'Suzanne Dantis',
     age: 58,
     condition: 'Hypertension',
-    lastVisit: '2024-03-12',
-    nextAppointment: '2024-03-25',
+    lastVisit: '2025-09-02',
+    nextAppointment: '2025-09-16',
     avatar: 'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg',
     history: [
       {
         id: 'h4',
-        date: '2024-03-12',
+        date: '2025-09-02',
         type: 'Regular Checkup',
         description: 'Blood pressure monitoring',
         diagnosis: 'BP well controlled at 130/85',
@@ -97,7 +97,7 @@ const mockPatients: Patient[] = [
       },
       {
         id: 'h5',
-        date: '2024-02-20',
+        date: '2025-08-15',
         type: 'Emergency Visit',
         description: 'High blood pressure episode',
         diagnosis: 'Hypertensive crisis - controlled',
@@ -111,12 +111,13 @@ const mockPatients: Patient[] = [
     name: 'Yogesh Ghadge',
     age: 72,
     condition: 'Arthritis',
-    lastVisit: '2024-03-08',
+    lastVisit: '2025-08-28',
+    nextAppointment: '2025-09-12',
     avatar: 'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg',
     history: [
       {
         id: 'h6',
-        date: '2024-03-08',
+        date: '2025-08-28',
         type: 'Regular Checkup',
         description: 'Joint pain assessment',
         diagnosis: 'Moderate osteoarthritis in knees',
@@ -125,7 +126,7 @@ const mockPatients: Patient[] = [
       },
       {
         id: 'h7',
-        date: '2024-01-15',
+        date: '2025-07-18',
         type: 'X-Ray Review',
         description: 'Joint imaging results',
         diagnosis: 'Degenerative changes confirmed',
@@ -139,13 +140,13 @@ const mockPatients: Patient[] = [
     name: 'Yash Hingu',
     age: 45,
     condition: 'Cardiac Care',
-    lastVisit: '2024-03-14',
-    nextAppointment: '2024-03-18',
+    lastVisit: '2025-09-04',
+    nextAppointment: '2025-09-11',
     avatar: 'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg',
     history: [
       {
         id: 'h8',
-        date: '2024-03-14',
+        date: '2025-09-04',
         type: 'Cardiology Consultation',
         description: 'Post-procedure follow-up',
         diagnosis: 'Recovery progressing well post angioplasty',
@@ -154,7 +155,7 @@ const mockPatients: Patient[] = [
       },
       {
         id: 'h9',
-        date: '2024-02-28',
+        date: '2025-08-20',
         type: 'Procedure',
         description: 'Coronary angioplasty performed',
         diagnosis: '90% blockage in LAD - successfully treated',

@@ -270,13 +270,21 @@ export default function ProfileScreen() {
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Profile Info */}
-        <View style={styles.profileSection}>
-          <View style={styles.profileHeader}>
-            <Image source={{ uri: profileData.avatar }} style={styles.profileAvatar} />
-            {/* <TouchableOpacity style={styles.addButtonSmall}>
-              <Plus color="#FFFFFF" size={16} />
-            </TouchableOpacity> */}
-          </View>
+        {/* Profile Info */}
+<View style={styles.profileSection}>
+  <View style={styles.profileHeader}>
+    {profileData.avatar ? (
+      <Image source={{ uri: profileData.avatar }} style={styles.profileAvatar} />
+    ) : (
+      <View style={styles.profileAvatarPlaceholder}>
+        <User color="#9CA3AF" size={40} />
+      </View>
+    )}
+    {/* Pencil button positioned to touch the profile */}
+    <TouchableOpacity style={styles.profileEditButton}>
+      <Pencil color="#FFFFFF" size={16} />
+    </TouchableOpacity>
+  </View>
 
           <Text style={styles.profileName}>{user?.name}</Text>
           {isDoctorInterface ? (
@@ -912,4 +920,29 @@ const styles = StyleSheet.create({
     color: '#374151',
     marginBottom: 8,
   },
+  profileAvatarPlaceholder: {
+  width: 100,
+  height: 100,
+  borderRadius: 50,
+  backgroundColor: '#F3F4F6',
+  borderWidth: 2,
+  borderColor: '#E5E7EB',
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+profileEditButton: {
+  position: 'absolute',
+  bottom: -2,  // Adjusted to touch the profile circle
+  right: -2,   // Adjusted to touch the profile circle
+  backgroundColor: '#16A34A',
+  padding: 8,
+  borderRadius: 20,
+  borderWidth: 2,  // Reduced border width
+  borderColor: '#FFFFFF',
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.1,
+  shadowRadius: 4,
+  elevation: 3,
+},
 });

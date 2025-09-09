@@ -17,7 +17,7 @@ export default function PatientLayout() {
           height: 92, // Same as doctor layout
         },
         tabBarLabelStyle: {
-          fontSize: 12, // Same as doctor layout
+          fontSize: 11, // Same as doctor layout
           fontWeight: '500', // Same as doctor layout
           marginTop: 4, // Same as doctor layout
           marginBottom: 4, // Added margin below the label text

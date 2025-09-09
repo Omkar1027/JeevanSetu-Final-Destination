@@ -47,6 +47,15 @@ interface Medicine {
   disease: string;
 }
 
+// Hardcoded scheduled appointment
+const hardcodedAppointment: Appointment = {
+  id: 'hardcoded-1',
+  doctorName: 'Dr. Amit Singh',
+  appointmentDate: new Date().toISOString().split('T')[0] + ' 11:00',
+  time: '11:00 AM',
+  status: 'scheduled'
+};
+
 // Dummy prescriptions data
 const dummyPrescriptions: Prescription[] = [
   {
@@ -157,7 +166,12 @@ export default function TodayScreen() {
   };
 
   const fetchAppointments = async () => {
-    if (!user) return;
+    if (!user) {
+      // If no user, just use hardcoded appointment
+      setAppointments([hardcodedAppointment]);
+      setLoadingAppointments(false);
+      return;
+    }
 
     try {
       const today = new Date();
@@ -176,6 +190,8 @@ export default function TodayScreen() {
 
       if (error) {
         console.error('Error fetching appointments:', error);
+        // Fallback to hardcoded appointment on error
+        setAppointments([hardcodedAppointment]);
       } else if (data) {
         const mappedAppointments: Appointment[] = data.map((apt: any) => ({
           id: apt.id,
@@ -184,10 +200,15 @@ export default function TodayScreen() {
           time: new Date(apt.appointment_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           status: apt.status,
         }));
-        setAppointments(mappedAppointments);
+        
+        // Add hardcoded appointment to the list
+        const allAppointments = [hardcodedAppointment, ...mappedAppointments];
+        setAppointments(allAppointments);
       }
     } catch (error) {
       console.error('Unexpected error fetching appointments:', error);
+      // Fallback to hardcoded appointment on error
+      setAppointments([hardcodedAppointment]);
     } finally {
       setLoadingAppointments(false);
     }
