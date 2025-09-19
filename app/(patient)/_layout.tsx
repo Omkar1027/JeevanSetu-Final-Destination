@@ -43,6 +43,15 @@ export default function PatientLayout() {
         }}
       />
       <Tabs.Screen
+        name="assistant"
+        options={{
+          title: 'Sahayata',
+          tabBarIcon: ({ color, size }) => (
+            <MessageCircle color={color} size={28} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="doctors"
         options={{
           title: 'Doctors',
@@ -52,18 +61,9 @@ export default function PatientLayout() {
         }}
       />
       <Tabs.Screen
-        name="assistant"
+        name="pharmacy"
         options={{
-          title: 'Assistant',
-          tabBarIcon: ({ color, size }) => (
-            <MessageCircle color={color} size={28} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: 'Profile',
+          title: 'Pharmacy',
           tabBarIcon: ({ color, size }) => (
             <User color={color} size={28} />
           ),
